@@ -6,11 +6,9 @@ import netlify from "@astrojs/netlify"; // 👈 Agregado
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
+  adapter:netlify(), // 👈 Necesario para usar SSR en Netlify
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [
-    react(),
-    netlify(), // 👈 Integración de Netlify
-  ],
 });
