@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import HeroContent from "../components/HeroContent.astro";
 import InfoEmpresa from "../components/InfoEmpresa.astro";
 import ServicioPrincipal from "../components/ServicioPrincipal.astro";
-import FormularioResenas from "../components/FormularioResenas.astro";
+import { FormResenas } from "../components/FormResenas";
 ---
 
 <Layout title="Gaphin">
@@ -12,7 +12,7 @@ import FormularioResenas from "../components/FormularioResenas.astro";
     <InfoEmpresa />
     <ServicioPrincipal />
     <section id="reseñas" class="bg-gray-100 py-16">
-      <FormularioResenas />
+      <FormResenas client:load />
     </section>
   </div>
 </Layout>
