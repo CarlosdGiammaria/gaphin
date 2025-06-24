@@ -3,6 +3,7 @@ import { db, collection, getDocs } from "../utils/firebaseAdmin";
 
 const Listado = () => {
   const [resenas, setResenas] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado para el loader
 
   useEffect(() => {
     const obtenerResenas = async () => {
@@ -12,10 +13,11 @@ const Listado = () => {
           id: doc.id,
           ...doc.data()
         }));
-        console.log("dara", data)
         setResenas(data);
       } catch (error) {
         console.error("Error al obtener reseñas:", error);
+      } finally {
+        setLoading(false); // Ocultar loader cuando termina
       }
     };
 
@@ -41,30 +43,29 @@ const Listado = () => {
           </a>
         </div>
 
-        {/* Lista */}
-        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {resenas.map((r) => (
-            <div
-              key={r.id}
-              className="bg-gray-50 border border-gray-200 rounded-xl shadow-md p-6 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
-            >
-              <div>
-                <h3 className="text-lg font-semibold text-[#365b6d] mb-1">{r.name}</h3>
-                <p className="text-sm text-gray-500 mb-2">
-                  Conjunto Residencial: <span className="uppercase">{r.conjunto}</span>
-                </p>
-                <p className="text-gray-800 italic text-base">“{r.message}”</p>
+        {/* Loader */}
+        {loading ? (
+          <p className="text-center text-gray-500 text-lg">Cargando reseñas...</p>
+        ) : resenas.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">No existen reseñas aún.</p>
+        ) : (
+          <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {resenas.map((r) => (
+              <div
+                key={r.id}
+                className="bg-gray-50 border border-gray-200 rounded-xl shadow-md p-6 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
+              >
+                <div>
+                  <h3 className="text-lg font-semibold text-[#365b6d] mb-1">{r.name}</h3>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Conjunto Residencial: <span className="uppercase">{r.conjunto}</span>
+                  </p>
+                  <p className="text-gray-800 italic text-base">“{r.message}”</p>
+                </div>
               </div>
-              {/* <p className="text-sm text-right text-red-400 mt-6">
-                {r.fecha?.toDate().toLocaleDateString("es-CO", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric"
-                })}
-              </p> */}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
